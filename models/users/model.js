@@ -2,6 +2,7 @@
 const { Schema, model } = require('mongoose')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const gravatar = require('gravatar')
 
 const userSchema = Schema({ 
   name:{
@@ -19,6 +20,10 @@ const userSchema = Schema({
     required: [true, 'Email is required'],
     unique: true,
   },
+  avatarURL: {
+    type: String,
+    default:null
+  },
   subscription: {
     type: String,
     enum: ["starter", "pro", "business"],
@@ -29,6 +34,14 @@ const userSchema = Schema({
     default: null
   }
 }, {versionKey: false, timestamps: true})
+
+userSchema.methods.setAvatarFromEmail = function(){
+  this.avatarURL = gravatar.url(this.email, {protocol: 'https'})
+}
+
+userSchema.methods.updateAvatarURL = function(url){
+  this.avatarURL = url
+}
 
 userSchema.methods.hashPassword = function(password){
    this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(14))

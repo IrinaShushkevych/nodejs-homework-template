@@ -2,6 +2,7 @@
 const { Conflict } = require('http-errors')
 const { userSchema } = require('../../models')
 
+
 const register = async (req, res, next) => {
    const { name, email, password } = req.body
 
@@ -10,8 +11,10 @@ const register = async (req, res, next) => {
        return next(Conflict('User is allready exists'))
    }
 
+   
    const newUser = new userSchema.User({name, email})
    newUser.hashPassword(password)
+   newUser.setAvatarFromEmail()
    newUser.save()
    res.status(201).json({
      status: 'created',
@@ -19,6 +22,7 @@ const register = async (req, res, next) => {
      data: {
        name: newUser.name,
        email: newUser.email,
+       avatarURL: newUser.avatarURL,
        subscription: newUser.subscription
      }
   })

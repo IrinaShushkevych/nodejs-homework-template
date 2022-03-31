@@ -5,7 +5,8 @@ const joiRegisterUser = Joi.object({
   name: Joi.string().min(2).required(),
   password: Joi.string().min(6).required(),
   email: Joi.string().email().required(),
-  subscription: Joi.string().optional()
+  subscription: Joi.string().optional(),
+  avatarURL: Joi.string().optional()
 })
 
 const joiLoginUser = Joi.object({
