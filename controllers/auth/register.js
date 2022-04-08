@@ -1,24 +1,12 @@
 // created by Irina Shushkevych
-const { Conflict } = require('http-errors')
-const { userSchema } = require('../../models')
+const userService = require('../../service/auth')
+const { httpMessage } = require('../../libs/messages')
 
-
-const register = async (req, res, next) => {
-   const { name, email, password } = req.body
-
-   const result = await userSchema.User.findOne({email})
-   if (result){
-       return next(Conflict('User is allready exists'))
-   }
-
-   
-   const newUser = new userSchema.User({name, email})
-   newUser.hashPassword(password)
-   newUser.setAvatarFromEmail()
-   newUser.save()
-   res.status(201).json({
-     status: 'created',
-     code: 201,
+const register = async (req, res) => {
+  const newUser = await userService.addUser(req.body)
+   res.status(httpMessage.CREATED.code).json({
+     status: httpMessage.CREATED.message,
+     code: httpMessage.CREATED.code,
      data: {
        name: newUser.name,
        email: newUser.email,

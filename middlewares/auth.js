@@ -17,7 +17,6 @@ const auth = async (req, res, next) => {
   if (bearer !== 'Bearer' || !token){
     return next(Unauthorized())
   }
-
   try{
     jwt.verify(token, SECRET_KEY)
     req.user = await findUser(token)

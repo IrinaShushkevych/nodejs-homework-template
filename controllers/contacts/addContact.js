@@ -1,16 +1,12 @@
 // created by Irina Shushkevych
-const { contactSchema } = require('../../models')
-
+const { httpMessage } = require('../../libs/messages')
+const contactService = require('../../service/contacts')
 
 const addContact = async (req, res, next) => {
-  const { id } = req.user
-  const data = await contactSchema.Contact.create({
-    ...req.body, 
-    owner: id
-  })
-  res.status(201).json({
-    status: 'created',
-    code: 201,
+  const data = await contactService.add(req.user, req.body)
+  res.status(httpMessage.CREATED.code).json({
+    status: httpMessage.CREATED.message,
+    code: httpMessage.CREATED.code,
     data,
   })
 }
