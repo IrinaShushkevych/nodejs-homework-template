@@ -1,31 +1,15 @@
 // created by Irina Shushkevych
-const { contactSchema } = require('../../models')
+const { httpMessage } = require("../../libs/messages");
+const contactService = require("../../service/contacts");
 
+const updateContactFavorites = async (req, res) => {
+  const data = contactService.updateFavorite(req.params, req.user, req.body);
 
-const updateContactFavorites = async (req, res, next) => {
-  const { contactId } = req.params
-  const { favorite } = req.body
-  const { id } = req.user
-  const data = await contactSchema.Contact.findOneAndUpdate(
-    {
-      $and : [
-        {_id: contactId }, 
-        { owner: id }
-      ]
-    }, 
-    { favorite }, 
-    { new: true }
-  )
- 
-  if (!data){
-    return next({ id: contactId, status: 404 })
-
-  }
-  res.status(200).json({
-    status: 'ok',
-    code: 200,
+  res.status(httpMessage.OK.code).json({
+    status: httpMessage.OK.message,
+    code: httpMessage.OK.code,
     data,
-  })
-}
+  });
+};
 
-module.exports = updateContactFavorites
+module.exports = updateContactFavorites;

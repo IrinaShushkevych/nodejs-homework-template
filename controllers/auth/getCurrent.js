@@ -1,16 +1,12 @@
 // created by Irina Shushkevych
-const { Unauthorized } = require('http-errors')
-const { userSchema } = require("../../models")
+const userService = require('../../service/auth')
+const { httpMessage } = require('../../libs/messages')
 
-const getCurrent = async (req, res, next) => {
-  const { id } = req.user
-  const data = await userSchema.User.findById(id)
-  if (!data){
-      return next(Unauthorized())
-  } 
-  res.status(200).json({
-      status:'ok',
-      code: 200,
+const getCurrent = async (req, res) => {
+  const data = userService.getCurrentUser(req.user)
+  res.status(httpMessage.OK.code).json({
+      status: httpMessage.OK.message,
+      code: httpMessage.OK.code,
       data:{
           name: data.name,
           email: data.email,

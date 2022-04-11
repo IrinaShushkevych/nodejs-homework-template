@@ -1,11 +1,11 @@
 // created by Irina Shushkevych
+const {BadRequest} = require('http-errors')
 
 const validate = (schema) => {
   return (req, res, next) => {
     const {error} = schema.validate(req.body)
     if (error) {
-      error.status = 400
-      next(error)
+      next(BadRequest(error.message))
     }
     next()
   }

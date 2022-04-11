@@ -1,24 +1,13 @@
 // created by Irina Shushkevych
-const { contactSchema } = require('../../models')
+const { httpMessage } = require('../../libs/messages')
+const contactService = require('../../service/contacts')
 
-
-const getContactById = async (req, res, next) => {
-  const { contactId } = req.params
-  const { id } = req.user
-  const data = await contactSchema.Contact.findOne({
-    $and : [
-      {_id: contactId }, 
-      { owner: id }
-    ]
-  })
-
-  if (!data) {
-    return next({ id: contactId, status: 404 }) 
-  }
-
-  res.status(200).json({
-    status: 'ok',
-    code: 200,
+const getContactById = async (req, res) => {
+  const data = await contactService.getById(req.params, req.user)
+  
+  res.status(httpMessage.OK.code).json({
+    status: httpMessage.OK.message,
+    code: httpMessage.OK.code,
     data,
   })
 }

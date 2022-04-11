@@ -1,25 +1,15 @@
 // created by Irina Shushkevych
-const { NotFound, BadRequest } = require('http-errors')
-const { userSchema } = require("../../models")
+const { httpMessage } = require('../../libs/messages');
+const userService = require('../../service/auth')
 
 const updateUser = async (req, res, next) => {
-   const { id } = req.params
-   try{
-     const user = await userSchema.User.findById(id)
-    
-     if (!user){
-        return next(NotFound(`User with id = ${id} not found`))
-     }
-     user.updateSubscription(req.body.subscription)
-     await user.save()
-     res.status(200).json({
-       status:'ok',
-       code: 200,
-       data: user
-     })
-   } catch(error){
-       next(BadRequest(error.message))
-   }
-}
+    const user = userService.updateUser(req.params, req.body)
+    res.status(httpMessage.OK.code).json({
+      status: httpMessage.OK.message,
+      code: httpMessage.OK.code,
+      data: user,
+    });
 
-module.exports = updateUser
+};
+
+module.exports = updateUser;

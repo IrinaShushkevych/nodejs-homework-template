@@ -1,12 +1,13 @@
 // created by Irina Shushkevych
-const { userSchema } = require('../../models')
+const userService = require('../../service/auth')
+const { httpMessage } = require('../../libs/messages')
+
 
 const logout = async (req, res) => {
-  const {id} = req.user
-  await userSchema.User.findByIdAndUpdate(id, {token:null})
-  res.status(204).json({
-    status: "ok",
-    code: 204
+  await userService.logoutUser(req.user)
+  res.status(httpMessage.NORESPONSE.code).json({
+    status: httpMessage.NORESPONSE.message,
+    code: httpMessage.NORESPONSE.code
   })
 }
 
