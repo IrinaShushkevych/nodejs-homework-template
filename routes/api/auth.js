@@ -1,22 +1,44 @@
 // created by Irina Shushkevych
-const express = require('express')
+const express = require("express");
 
-const { ctrlWrapper, validate, auth, uploadAvatar } = require('../../middlewares')
-const { authCtrl: ctrl } = require('../../controllers')
-const {userSchema: schema} = require('../../models')
+const {
+  ctrlWrapper,
+  validate,
+  auth,
+  uploadAvatar,
+} = require("../../middlewares");
+const { authCtrl: ctrl } = require("../../controllers");
+const { userSchema: schema } = require("../../models");
 
-const router = express.Router()
+const router = express.Router();
 
-router.post('/signup', validate(schema.joiRegisterUser), ctrlWrapper(ctrl.register))
+router.post("/verify", ctrlWrapper(ctrl.reVerification));
 
-router.post('/signin', validate(schema.joiLoginUser), ctrlWrapper(ctrl.login))
+router.get("/verify/:verificationToken", ctrlWrapper(ctrl.verify));
 
-router.get('/logout', auth, ctrlWrapper(ctrl.logout))
+router.post(
+  "/signup",
+  validate(schema.joiRegisterUser),
+  ctrlWrapper(ctrl.register)
+);
 
-router.get('/current', auth, ctrlWrapper(ctrl.getCurrent))
+router.post("/signin", validate(schema.joiLoginUser), ctrlWrapper(ctrl.login));
 
-router.patch('/avatars', [auth, uploadAvatar.single('avatar')], ctrlWrapper(ctrl.updateAvatars))
+router.get("/logout", auth, ctrlWrapper(ctrl.logout));
 
-router.patch('/:id', auth, validate(schema.joiUpdateSubscription), ctrlWrapper(ctrl.updateUser))
+router.get("/current", auth, ctrlWrapper(ctrl.getCurrent));
 
-module.exports = router
+router.patch(
+  "/avatars",
+  [auth, uploadAvatar.single("avatar")],
+  ctrlWrapper(ctrl.updateAvatars)
+);
+
+router.patch(
+  "/:id",
+  auth,
+  validate(schema.joiUpdateSubscription),
+  ctrlWrapper(ctrl.updateUser)
+);
+
+module.exports = router;
