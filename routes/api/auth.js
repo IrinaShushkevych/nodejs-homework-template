@@ -13,7 +13,7 @@ const { userSchema: schema } = require("../../models");
 const router = express.Router();
 
 router.post("/verify", ctrlWrapper(ctrl.reVerification));
-
+     
 router.get("/verify/:verificationToken", ctrlWrapper(ctrl.verify));
 
 router.post(
