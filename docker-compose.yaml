@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  web:
+    build: .
+    container_name: web
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - '80:3000'
+    networks:
+      - net-app
+
+  mongodb:
+    image: 'mongo:latest'
+    container_name: 'mongodb'
+    restart: unless-stopped
+    volumes:
+      - '/d/mongodb:/data/db'
+    ports:
+      - '27017:27017'
+    networks:
+      - net-app
+
+  networks:
+    net-app:
+      driver: bridge
