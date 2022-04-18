@@ -7,7 +7,6 @@ const gravatar = require('gravatar')
 const userSchema = Schema({ 
   name:{
       type: String,
-      // required: true,
       minlength: 2,
       default: "Guest"
   },
@@ -23,7 +22,7 @@ const userSchema = Schema({
   },
   avatarURL: {
     type: String,
-    default:null
+    default: () => {return gravatar.url(this.email, {protocol: 'https'})}
   },
   subscription: {
     type: String,
@@ -33,23 +32,28 @@ const userSchema = Schema({
   token: {
     type: String,
     default: null
+  },
+  verify: {
+    type: Boolean,
+    default: false
+  },
+  verificationToken:{
+    type: String,
+    required: [true, 'Verify token is required']
   }
 }, {versionKey: false, timestamps: true})
 
-userSchema.methods.setAvatarFromEmail = function(){
-  this.avatarURL = gravatar.url(this.email, {protocol: 'https'})
-}
+userSchema.pre('save', function(){
+  this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(14))
+})
 
 userSchema.methods.updateAvatarURL = function(url){
   this.avatarURL = url
 }
 
-userSchema.methods.hashPassword = function(password){
-   this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(14))
-}
-
-userSchema.methods.comparePassword = function(password){
-  return bcrypt.compareSync(password, this.password)
+userSchema.methods.comparePassword = async function(password){
+const res = await  bcrypt.compare(password, this.password)
+return res
 }
 
 userSchema.methods.setToken = function(){

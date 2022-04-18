@@ -1,6 +1,6 @@
 // created by Irina Shushkevych
-const userService = require('../../service/auth')
 const { httpMessage } = require('../../libs/messages')
+const userService = require('../../service/auth')
 
 const register = async (req, res) => {
   const newUser = await userService.addUser(req.body)
