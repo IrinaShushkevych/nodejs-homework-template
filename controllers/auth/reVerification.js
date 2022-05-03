@@ -11,7 +11,7 @@ const reVerification = async (req, res) => {
 
    await userService.reSendMail(email)
 
-   res.status(httpMessage.OK.code).json({
+   return res.status(httpMessage.OK.code).json({
        status: httpMessage.OK.message,
        code: httpMessage.OK.code
    })

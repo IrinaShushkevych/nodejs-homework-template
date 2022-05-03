@@ -5,7 +5,7 @@ const contactService = require('../../service/contacts')
 const listContacts = async (req, res) => {
   const list = await contactService.getList(req.user, req.query)
 
-  res.status(httpMessage.OK.code).json({
+  return res.status(httpMessage.OK.code).json({
     status: httpMessage.OK.message,
     code: httpMessage.OK.code,
     total: list.length,

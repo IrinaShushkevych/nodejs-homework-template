@@ -5,7 +5,7 @@ const contactService = require("../../service/contacts");
 const removeContact = async (req, res) => {
   const data = contactService.remove(req.params, req.user);
 
-  res.status(httpMessage.OK.code).json({
+  return res.status(httpMessage.OK.code).json({
     status: httpMessage.OK.message,
     code: httpMessage.OK.code,
     data,

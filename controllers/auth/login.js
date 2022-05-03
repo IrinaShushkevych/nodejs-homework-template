@@ -2,10 +2,10 @@
 const userService = require("../../service/auth");
 const { httpMessage } = require('../../libs/messages')
 
-const login = async (req, res, next) => {
+const login = async (req, res) => {
   const data = await userService.loginUser(req.body);
 
-  res.status(httpMessage.OK.code).json({
+  return res.status(httpMessage.OK.code).json({
     status: httpMessage.OK.message,
     code: httpMessage.OK.code,
     data: {

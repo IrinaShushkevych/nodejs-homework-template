@@ -5,7 +5,7 @@ const contactService = require('../../service/contacts')
 const updateContact = async (req, res, next) => {
   const data = contactService.update(req.params, req.user, req.body)
  
-  res.status(httpMessage.OK.code).json({
+  return res.status(httpMessage.OK.code).json({
     status: httpMessage.OK.message,
     code: httpMessage.OK.code,
     data,

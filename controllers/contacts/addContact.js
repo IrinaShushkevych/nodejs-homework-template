@@ -4,7 +4,7 @@ const contactService = require('../../service/contacts')
 
 const addContact = async (req, res, next) => {
   const data = await contactService.add(req.user, req.body)
-  res.status(httpMessage.CREATED.code).json({
+  return res.status(httpMessage.CREATED.code).json({
     status: httpMessage.CREATED.message,
     code: httpMessage.CREATED.code,
     data,

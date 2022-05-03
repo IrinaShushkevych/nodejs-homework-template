@@ -4,9 +4,9 @@ const cors = require("cors");
 
 require("dotenv").config();
 
-const { sendError } = require("./middlewares");
+const { sendError } = require("../middlewares");
 
-const { apiRouter } = require("./routes");
+const { apiRouter } = require("../routes");
 
 const app = express();
 

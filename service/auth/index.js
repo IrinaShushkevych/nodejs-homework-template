@@ -36,7 +36,7 @@ class UserService {
   }
   
   async loginUser({ email, password }) {
-    const user = await userSchema.User.findOne({ email, verify:true });
+    const user = await userSchema.User.findOne({ email, verify: true });
     if (!user) {
       throw new NotFound();
     }

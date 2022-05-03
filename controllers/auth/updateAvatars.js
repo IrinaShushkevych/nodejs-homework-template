@@ -4,7 +4,7 @@ const { httpMessage } = require('../../libs/messages')
 
 const updateAvatars = async (req, res, next) => {
   const user = await userService.updateAvatarUser(req.file, req.user);
-  res.status(httpMessage.OK.code).json({
+  return res.status(httpMessage.OK.code).json({
     status: httpMessage.OK.message,
     code: httpMessage.OK.code,
     data: { avatarURL: user.avatarURL },

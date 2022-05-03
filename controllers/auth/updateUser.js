@@ -4,7 +4,7 @@ const userService = require('../../service/auth')
 
 const updateUser = async (req, res, next) => {
     const user = userService.updateUser(req.params, req.body)
-    res.status(httpMessage.OK.code).json({
+    return res.status(httpMessage.OK.code).json({
       status: httpMessage.OK.message,
       code: httpMessage.OK.code,
       data: user,

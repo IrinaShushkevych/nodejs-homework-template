@@ -5,7 +5,7 @@ const contactService = require('../../service/contacts')
 const getContactById = async (req, res) => {
   const data = await contactService.getById(req.params, req.user)
   
-  res.status(httpMessage.OK.code).json({
+  return res.status(httpMessage.OK.code).json({
     status: httpMessage.OK.message,
     code: httpMessage.OK.code,
     data,

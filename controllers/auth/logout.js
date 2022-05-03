@@ -5,7 +5,7 @@ const { httpMessage } = require('../../libs/messages')
 
 const logout = async (req, res) => {
   await userService.logoutUser(req.user)
-  res.status(httpMessage.NORESPONSE.code).json({
+  return res.status(httpMessage.NORESPONSE.code).json({
     status: httpMessage.NORESPONSE.message,
     code: httpMessage.NORESPONSE.code
   })

@@ -4,7 +4,7 @@ const { httpMessage } = require('../../libs/messages')
 
 const getCurrent = async (req, res) => {
   const data = userService.getCurrentUser(req.user)
-  res.status(httpMessage.OK.code).json({
+  return res.status(httpMessage.OK.code).json({
       status: httpMessage.OK.message,
       code: httpMessage.OK.code,
       data:{

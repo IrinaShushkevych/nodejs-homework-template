@@ -4,7 +4,7 @@ const userService = require('../../service/auth')
 
 const register = async (req, res) => {
   const newUser = await userService.addUser(req.body)
-   res.status(httpMessage.CREATED.code).json({
+  return res.status(httpMessage.CREATED.code).json({
      status: httpMessage.CREATED.message,
      code: httpMessage.CREATED.code,
      data: {
