@@ -14,12 +14,12 @@ class ContactService {
     const data = await contactSchema.Contact.findOne({
       $and: [{ _id: contactId }, { owner: id }],
     });
-    
+
     if (!data) {
       throw new NotFound(`Contacts with id = ${contactId} not found`);
     }
 
-    return data
+    return data;
   }
 
   async getList({ id }, { page = 1, limit = 10, favorite }) {
@@ -51,6 +51,7 @@ class ContactService {
     if (!data) {
       throw new NotFound(`Contacts with id = ${contactId} not found`);
     }
+
     return data;
   }
 
@@ -83,7 +84,7 @@ class ContactService {
       throw new NotFound(`Contacts with id = ${contactId} not found`);
     }
 
-    return data
+    return data;
   }
 }
 

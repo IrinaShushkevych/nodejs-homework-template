@@ -1,23 +1,22 @@
 const { Conflict, NotFound, Unauthorized, BadRequest } = require("http-errors");
 const Jimp = require("jimp");
 const fs = require("fs/promises");
-const { v4: uuidv4 } = require('uuid')
-const sgMail = require('@sendgrid/mail')
+const { v4: uuidv4 } = require("uuid");
+const sgMail = require("@sendgrid/mail");
 const { userSchema } = require("../../models");
 const { appPath } = require("../../libs/path");
 
 class UserService {
-
-  async sendMail(email, verificationToken){
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+  async sendMail(email, verificationToken) {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const message = {
-      to: email, 
+      to: email,
       from: process.env.SENDGRID_EMAIL,
-      subject: 'Verification',
+      subject: "Verification",
       text: `Please verify your account: http://localhost:3000/api/auth/verify/${verificationToken}`,
       html: `<h1>Please <a href='http://localhost:3000/api/auth/verify/${verificationToken}'>verify</a> your account</h1>`,
-    }
-    await sgMail.send(message)
+    };
+    await sgMail.send(message);
   }
 
   async addUser({ name, email, password }) {
@@ -26,21 +25,28 @@ class UserService {
       throw new Conflict("User is allready exists");
     }
 
-    const verificationToken = uuidv4()
-    const newUser = new userSchema.User({ name, email, password, verificationToken });
+    const verificationToken = uuidv4();
+    const newUser = new userSchema.User({
+      name,
+      email,
+      password,
+      verify: true,
+      verificationToken,
+    });
     newUser.save();
 
-    this.sendMail(email, verificationToken)
+    // this.sendMail(email, verificationToken);
 
     return newUser;
   }
-  
+
   async loginUser({ email, password }) {
     const user = await userSchema.User.findOne({ email, verify: true });
     if (!user) {
       throw new NotFound();
     }
-    const verified = user.comparePassword(password);
+    const verified = await user.comparePassword(password);
+    console.log(verified);
     if (!verified) {
       throw new Unauthorized();
     }
@@ -101,32 +107,32 @@ class UserService {
     }
   }
 
-  async verifyUser(verificationToken){
-    const user = await userSchema.User.findOne({verificationToken})
-    
-    if (!user){
-      throw new NotFound()
+  async verifyUser(verificationToken) {
+    const user = await userSchema.User.findOne({ verificationToken });
+
+    if (!user) {
+      throw new NotFound();
     }
 
-    user.verificationToken = 'null'//null
-    user.verify = true
-    user.save()
+    user.verificationToken = "null"; //null
+    user.verify = true;
+    user.save();
 
-    return user
+    return user;
   }
 
-  async reSendMail(email){
-    const user = await userSchema.User.findOne({email})
+  async reSendMail(email) {
+    const user = await userSchema.User.findOne({ email });
 
-    if (!user){
-      throw new NotFound()
+    if (!user) {
+      throw new NotFound();
     }
 
-    if (user.verify){
-      throw new BadRequest('Verification has already been passed')
+    if (user.verify) {
+      throw new BadRequest("Verification has already been passed");
     }
 
-    this.sendMail(email, user.verificationToken)
+    this.sendMail(email, user.verificationToken);
   }
 }
 

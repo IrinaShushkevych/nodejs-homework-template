@@ -8,7 +8,7 @@ const joiRegisterUser = Joi.object({
   subscription: Joi.string().optional(),
   avatarURL: Joi.string().optional()
 })
-
+ 
 const joiLoginUser = Joi.object({
   password: Joi.string().min(6).required(),
   email: Joi.string().email().required(),

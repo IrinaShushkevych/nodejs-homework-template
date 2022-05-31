@@ -1,6 +1,6 @@
 // created by Irina Shushkevych
 const userService = require("../../service/auth");
-const { httpMessage } = require('../../libs/messages')
+const { httpMessage } = require("../../libs/messages");
 
 const login = async (req, res) => {
   const data = await userService.loginUser(req.body);
@@ -14,6 +14,7 @@ const login = async (req, res) => {
         name: data.name,
         email: data.email,
         subscription: data.subscription,
+        avatarURL: data.avatarURL,
       },
     },
   });

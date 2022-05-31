@@ -1,0 +1,1180 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Phonebook",
+        "description": "You can save phone numbers and email of your contacts",
+        "version": "1.0.0",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "servers": [
+        {
+            "url": "https://localhost:3001/api"
+        },
+        {
+            "url": "https://.herokuapp.com/api"
+        }
+    ],
+    "paths": {
+        "/auth/signup": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User registration",
+                "requestBody": {
+                    "description": "Registration object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegistrationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "409": {
+                        "description": "Provided email already exists",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/auth/signin": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User login",
+                "requestBody": {
+                    "description": "Login object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User logout",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "User is logged out",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Not authorized.",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/auth/current": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User info",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/auth/{userId}": {
+            "patch": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update users information",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "required": true,
+                        "type": "string",
+                        "description": "User which you want update"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updating object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateSubscriptionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/groups": {
+            "get": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "All groups",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AllGroupsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Add group",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updating object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddGroupRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GroupResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/groups/{groupId}": {
+            "patch": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Update group's info",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "groupId",
+                        "required": true,
+                        "type": "string",
+                        "description": "Group which you want update"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updating object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateGroupRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GroupResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Update group's info",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "groupId",
+                        "required": true,
+                        "type": "string",
+                        "description": "Group which you want update"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GroupResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/contacts": {
+            "get": {
+                "tags": [
+                    "Contact"
+                ],
+                "summary": "All contacts",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AllContactResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Contact"
+                ],
+                "summary": "Add contact",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "Add contact",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContactAddRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/contacts/{contactId}": {
+            "get": {
+                "tags": [
+                    "Contact"
+                ],
+                "summary": "Get contact by Id",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "contactId",
+                        "required": true,
+                        "type": "string",
+                        "description": "Contact which you want get"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {}
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Contact"
+                ],
+                "summary": "Update contact",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "contactId",
+                        "required": true,
+                        "type": "string",
+                        "description": "Contact which you want update"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Add contact",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContactUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {}
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Contact"
+                ],
+                "summary": "Delete contact",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "contactId",
+                        "required": true,
+                        "type": "string",
+                        "description": "Contact which you want delete"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/contacts/{contactId}/favorites": {
+            "patch": {
+                "tags": [
+                    "Contact"
+                ],
+                "summary": "Update favorite of contact",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "contactId",
+                        "required": true,
+                        "type": "string",
+                        "description": "Contact which you want update"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Update favorite of contact",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContactUpdateFavoriteRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {}
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "RegistrationRequest": {
+                "required": [
+                    "email",
+                    "password",
+                    "name"
+                ],
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "format": "email",
+                        "example": "user@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "User's password",
+                        "example": "qwerty12345",
+                        "minlength": 6
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "User's name",
+                        "minlength": 2,
+                        "example": "Adam"
+                    },
+                    "subscription": {
+                        "type": "string",
+                        "enum": [
+                            "starter",
+                            "pro",
+                            "business"
+                        ],
+                        "default": "starter"
+                    }
+                },
+                "example": {
+                    "name": "Adam",
+                    "email": "user@example.com",
+                    "password": "qwert12345"
+                }
+            },
+            "RegistrationResponse": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "example": "user@example.com"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "User name",
+                        "example": "Adam"
+                    },
+                    "subscription": {
+                        "type": "string",
+                        "description": "User subscription",
+                        "example": "starter"
+                    },
+                    "avatarURL": {
+                        "type": "string",
+                        "description": "User gravatar from email",
+                        "example": "https://s.gravatar.com/avatar/d415f0e30c471dfdd9bc4f827329ef48"
+                    }
+                },
+                "example": {
+                    "email": "user@example.com",
+                    "name": "Adam",
+                    "subscription": "starter",
+                    "avatarURL": "https://s.gravatar.com/avatar/d415f0e30c471dfdd9bc4f827329ef48"
+                }
+            },
+            "LoginRequest": {
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "format": "email",
+                        "minlength": 3,
+                        "maxlength": 100
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "User's password",
+                        "example": "qwerty12345",
+                        "minlength": 6,
+                        "maxlength": 36
+                    }
+                }
+            },
+            "LoginResponse": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "format": "email",
+                        "minlength": 3,
+                        "maxlength": 100
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "User name",
+                        "example": "Adam"
+                    },
+                    "subscription": {
+                        "type": "string",
+                        "description": "User subscription",
+                        "example": "starter"
+                    },
+                    "avatarURL": {
+                        "type": "string",
+                        "description": "User gravatar from email",
+                        "example": "https://s.gravatar.com/avatar/d415f0e30c471dfdd9bc4f827329ef48"
+                    },
+                    "token": {
+                        "type": "string",
+                        "description": "User's token",
+                        "example": "213jhjhu2h132h7eh27h71h"
+                    }
+                },
+                "example": {
+                    "user": {
+                        "email": "user@example.com",
+                        "name": "Adam",
+                        "subscription": "starter",
+                        "avatarURL": "https://s.gravatar.com/avatar/d415f0e30c471dfdd9bc4f827329ef48"
+                    },
+                    "token": "213jhjhu2h132h7eh27h71h"
+                }
+            },
+            "UpdateSubscriptionRequest": {
+                "required": [
+                    "subscription"
+                ],
+                "type": "object",
+                "properties": {
+                    "subscription": {
+                        "type": "string",
+                        "enum": [
+                            "starter",
+                            "pro",
+                            "business"
+                        ],
+                        "default": "starter"
+                    }
+                },
+                "example": {
+                    "subscription": "pro"
+                }
+            },
+            "AllGroupsResponse": {
+                "type": "array",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Group name",
+                        "example": "Family"
+                    },
+                    "color": {
+                        "type": "string",
+                        "description": "Color of group",
+                        "example": "#ffffff"
+                    }
+                },
+                "example": [
+                    {
+                        "name": "Family",
+                        "color": "#ff00ff"
+                    }
+                ]
+            },
+            "AddGroupRequest": {
+                "required": [
+                    "name",
+                    "color"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Group's name",
+                        "minlength": 3,
+                        "maxlength": 20,
+                        "example": "Family"
+                    },
+                    "color": {
+                        "type": "string",
+                        "description": "Color for group",
+                        "example": "#ffffff"
+                    }
+                },
+                "example": {
+                    "name": "Family",
+                    "color": "#ff00ff"
+                }
+            },
+            "GroupResponse": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Group's name",
+                        "minlength": 3,
+                        "maxlength": 20,
+                        "example": "Family"
+                    },
+                    "color": {
+                        "type": "string",
+                        "description": "Color for group",
+                        "example": "#ffffff"
+                    }
+                },
+                "example": {
+                    "name": "Family",
+                    "color": "#ff00ff"
+                }
+            },
+            "UpdateGroupRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Group's name",
+                        "minlength": 3,
+                        "maxlength": 20,
+                        "example": "Family"
+                    },
+                    "color": {
+                        "type": "string",
+                        "description": "Color for group",
+                        "example": "#ffffff"
+                    }
+                },
+                "example": {
+                    "name": "Family",
+                    "color": "#ff00ff"
+                }
+            },
+            "ContactAddRequest": {
+                "required": [
+                    "name"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minlength": 2,
+                        "descriprion": "Contact's name",
+                        "example": "Alex"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Contact's email",
+                        "format": "email",
+                        "example": "user@example.com"
+                    },
+                    "phone_mob1": {
+                        "type": "string",
+                        "minlength": 7,
+                        "maxlength": 20,
+                        "description": "Contact's mobile phone",
+                        "example": "1234567"
+                    },
+                    "phone_mob2": {
+                        "type": "string",
+                        "minlength": 7,
+                        "maxlength": 20,
+                        "description": "Contact's mobile phone",
+                        "example": "123-45-67"
+                    },
+                    "phone_home": {
+                        "type": "string",
+                        "minlength": 7,
+                        "maxlength": 20,
+                        "description": "Contact's home phone",
+                        "example": "063-123-45-67"
+                    },
+                    "phone_work": {
+                        "type": "string",
+                        "minlength": 7,
+                        "maxlength": 20,
+                        "description": "Contact's work phone",
+                        "example": "+38(066)123-45-67"
+                    },
+                    "group": {
+                        "type": "string",
+                        "description": "Id group",
+                        "example": "123456789"
+                    },
+                    "favorite": {
+                        "type": "boolean",
+                        "description": "Favorite's flag",
+                        "example": "true"
+                    }
+                },
+                "example": {
+                    "name": "Alex",
+                    "email": "user@example.com",
+                    "phone_mob1": "1234567",
+                    "phone_mob2": "123-45-67",
+                    "phone_home": "063-123-45-67",
+                    "phone_work": "+38(066)123-45-67",
+                    "group": "123456789",
+                    "favorite": "false"
+                }
+            },
+            "ContactResponse": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "descriprion": "Contact's name",
+                        "example": "Alex"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Contact's email",
+                        "example": "user@example.com"
+                    },
+                    "phone_mob1": {
+                        "type": "string",
+                        "description": "Contact's mobile phone",
+                        "example": "1234567"
+                    },
+                    "phone_mob2": {
+                        "type": "string",
+                        "description": "Contact's mobile phone",
+                        "example": "123-45-67"
+                    },
+                    "phone_home": {
+                        "type": "string",
+                        "description": "Contact's home phone",
+                        "example": "063-123-45-67"
+                    },
+                    "phone_work": {
+                        "type": "string",
+                        "description": "Contact's work phone",
+                        "example": "+38(066)123-45-67"
+                    },
+                    "group": {
+                        "type": "string",
+                        "description": "Id group",
+                        "example": "123456789"
+                    },
+                    "favorite": {
+                        "type": "boolean",
+                        "description": "Favorite's flag",
+                        "example": "true"
+                    }
+                },
+                "example": {
+                    "name": "Alex",
+                    "email": "user@example.com",
+                    "phone_mob1": "1234567",
+                    "phone_mob2": "123-45-67",
+                    "phone_home": "063-123-45-67",
+                    "phone_work": "+38(066)123-45-67",
+                    "group": "123456789",
+                    "favorite": "false"
+                }
+            },
+            "AllContactResponse": {
+                "type": "array",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "descriprion": "Contact's name",
+                        "example": "Alex"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Contact's email",
+                        "example": "user@example.com"
+                    },
+                    "phone_mob1": {
+                        "type": "string",
+                        "description": "Contact's mobile phone",
+                        "example": "1234567"
+                    },
+                    "phone_mob2": {
+                        "type": "string",
+                        "description": "Contact's mobile phone",
+                        "example": "123-45-67"
+                    },
+                    "phone_home": {
+                        "type": "string",
+                        "description": "Contact's home phone",
+                        "example": "063-123-45-67"
+                    },
+                    "phone_work": {
+                        "type": "string",
+                        "description": "Contact's work phone",
+                        "example": "+38(066)123-45-67"
+                    },
+                    "group": {
+                        "type": "string",
+                        "description": "Id group",
+                        "example": "123456789"
+                    },
+                    "favorite": {
+                        "type": "boolean",
+                        "description": "Favorite's flag",
+                        "example": "true"
+                    }
+                },
+                "example": [
+                    {
+                        "name": "Alex",
+                        "email": "user@example.com",
+                        "phone_mob1": "1234567",
+                        "phone_mob2": "123-45-67",
+                        "phone_home": "063-123-45-67",
+                        "phone_work": "+38(066)123-45-67",
+                        "group": "123456789",
+                        "favorite": "false"
+                    }
+                ]
+            },
+            "ContactUpdateRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minlength": 2,
+                        "descriprion": "Contact's name",
+                        "example": "Alex"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Contact's email",
+                        "format": "email",
+                        "example": "user@example.com"
+                    },
+                    "phone_mob1": {
+                        "type": "string",
+                        "minlength": 7,
+                        "maxlength": 20,
+                        "description": "Contact's mobile phone",
+                        "example": "1234567"
+                    },
+                    "phone_mob2": {
+                        "type": "string",
+                        "minlength": 7,
+                        "maxlength": 20,
+                        "description": "Contact's mobile phone",
+                        "example": "123-45-67"
+                    },
+                    "phone_home": {
+                        "type": "string",
+                        "minlength": 7,
+                        "maxlength": 20,
+                        "description": "Contact's home phone",
+                        "example": "063-123-45-67"
+                    },
+                    "phone_work": {
+                        "type": "string",
+                        "minlength": 7,
+                        "maxlength": 20,
+                        "description": "Contact's work phone",
+                        "example": "+38(066)123-45-67"
+                    },
+                    "group": {
+                        "type": "string",
+                        "description": "Id group",
+                        "example": "123456789"
+                    },
+                    "favorite": {
+                        "type": "boolean",
+                        "description": "Favorite's flag",
+                        "example": "true"
+                    }
+                },
+                "example": {
+                    "name": "Alex",
+                    "email": "user@example.com",
+                    "phone_mob1": "1234567",
+                    "phone_mob2": "123-45-67",
+                    "phone_home": "063-123-45-67",
+                    "phone_work": "+38(066)123-45-67",
+                    "group": "123456789",
+                    "favorite": "false"
+                }
+            },
+            "ContactUpdateFavoriteRequest": {
+                "required": [
+                    "favorite"
+                ],
+                "type": "object",
+                "properties": {
+                    "favorite": {
+                        "type": "boolean",
+                        "description": "Favorite's flag",
+                        "example": "true"
+                    }
+                },
+                "example": {
+                    "favorite": "false"
+                }
+            }
+        },
+        "securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "User",
+            "description": "Authorization endpoints"
+        },
+        {
+            "name": "Contact",
+            "description": "Contacts endpoint"
+        },
+        {
+            "name": "Settings",
+            "description": "Settings endpoint"
+        }
+    ]
+}
