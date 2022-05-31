@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const app = require("./bin/app");
 const db = require("./bin/db");
-const PORT = 3001;
+const { PORT = 3001 } = process.env;
 
 db.then(() => {
   app.listen(PORT, () => {
