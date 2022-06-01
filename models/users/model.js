@@ -48,9 +48,9 @@ const userSchema = Schema(
   { versionKey: false, timestamps: true }
 );
 
-userSchema.pre("save", function () {
+userSchema.methods.setPassword = function () {
   this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(14));
-});
+};
 
 userSchema.methods.updateAvatarURL = function (url) {
   this.avatarURL = url;

@@ -33,6 +33,7 @@ class UserService {
       verify: true,
       verificationToken,
     });
+    newUser.setPassword();
     newUser.save();
 
     // this.sendMail(email, verificationToken);
@@ -46,7 +47,6 @@ class UserService {
       throw new NotFound();
     }
     const verified = await user.comparePassword(password);
-    console.log(verified);
     if (!verified) {
       throw new Unauthorized();
     }
